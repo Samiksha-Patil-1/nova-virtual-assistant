@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔮</text></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="NOVA is a futuristic voice-enabled web AI virtual assistant with dynamic audio orb visualizer, speech recognition, smart commands, and Gemini AI integration." />
+    <title>NOVA - Futuristic AI Virtual Assistant</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- HUD Top Header -->
+      <header class="hud-header" id="hudHeader">
+        <div class="brand-section">
+          <div class="brand-logo-badge" aria-label="Nova Logo">🔮</div>
+          <div class="brand-titles">
+            <h1 id="assistantTitle">NOVA <span style="font-size: 0.65em; opacity: 0.75; font-family: var(--font-mono); color: var(--cyan-neon);">v2.0</span></h1>
+            <p class="tagline">QUANTUM NEURAL INTERFACE</p>
+          </div>
+        </div>
+
+        <div class="hud-status-badge" id="hudStatusBadge">
+          <div class="status-dot" id="statusDot"></div>
+          <span id="statusText">SYSTEM READY</span>
+        </div>
+
+        <div class="header-actions">
+          <button class="btn-icon" id="btnToggleSpeech" title="Toggle Voice Output (Mute/Unmute)" aria-label="Toggle Voice" style="width: auto; padding: 0 12px; font-size: 0.82rem; font-family: var(--font-tech); gap: 6px;">
+            🔊 <span>Voice ON</span>
+          </button>
+          <div class="sys-clock" id="systemClock" title="System Time">--:--:--</div>
+          <button class="btn-icon" id="btnTools" title="Productivity Tools (Timers & Notes)" aria-label="Open Tools">
+            🗂️
+          </button>
+          <button class="btn-icon" id="btnSettings" title="Configure Assistant Settings & API Key" aria-label="Open Settings">
+            ⚙️
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Stage -->
+      <main class="main-stage">
+        <!-- Visualizer Holographic Core -->
+        <section class="stage-visualizer" id="stageVisualizer" aria-label="AI Visualizer Core">
+          <div class="orb-container">
+            <canvas id="orbCanvas" width="400" height="400" title="Click orb to speak"></canvas>
+          </div>
+          <div class="stage-status-caption" id="stageCaption">CLICK ORB OR MIC TO TALK</div>
+          <div class="audio-reactive-bars" id="audioBars">
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+          </div>
+        </section>
+
+        <!-- Chat Feed & Action Log -->
+        <section class="stage-chat" id="stageChat" aria-label="Conversation Feed">
+          <div class="chat-header">
+            <div class="chat-header-title">
+              <span>💬 REAL-TIME TRANSCRIPT</span>
+            </div>
+            <button class="btn-bubble-action" id="btnClearChat" title="Clear Chat History">
+              🗑️ Clear
+            </button>
+          </div>
+
+          <div class="chat-feed" id="chatFeed" role="log" aria-live="polite">
+            <!-- Initial welcome message -->
+            <div class="message-bubble assistant">
+              <div class="bubble-meta">
+                <span>🤖 NOVA</span>
+                <span>SYSTEM</span>
+              </div>
+              <div class="bubble-content">
+                <p><strong>Greetings! I am NOVA</strong>, your voice-activated AI companion.</p>
+                <p>Click the <strong>microphone</strong> button below or tap my <strong>holographic core</strong> to speak, or type your query in the input bar.</p>
+                <p>Try saying <em>"what time is it"</em>, <em>"weather in Tokyo"</em>, <em>"set a timer for 2 minutes"</em>, or <em>"tell me a joke"</em>!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Action Chips -->
+          <div class="quick-chips-bar" id="quickChipsBar">
+            <button class="chip" data-cmd="Explain quantum entanglement in simple terms">⚛️ Quantum Entanglement</button>
+            <button class="chip" data-cmd="Write a Python function to check for palindromes">🐍 Python Palindrome</button>
+            <button class="chip" data-cmd="How does artificial intelligence work?">🧠 How AI Works</button>
+            <button class="chip" data-cmd="Write a professional leave request email">✍️ Draft Email</button>
+            <button class="chip" data-cmd="Weather in Mumbai">🌦️ Weather in Mumbai</button>
+            <button class="chip" data-cmd="Set a timer for 1 minute">⏱️ 1m Timer</button>
+            <button class="chip" data-cmd="Calculate 125 * 32">🧮 125 * 32</button>
+            <button class="chip" data-cmd="Tell me a joke">😄 Tell a joke</button>
+            <button class="chip" data-cmd="Play synthwave music on YouTube">▶️ Play Synthwave</button>
+            <button class="chip" data-cmd="Flip a coin">🪙 Flip a coin</button>
+          </div>
+        </section>
+      </main>
+
+      <!-- Bottom Control Bar -->
+      <footer class="control-bar" id="controlBar">
+        <div class="mic-toggle-wrapper">
+          <button class="btn-mic" id="btnMic" title="Toggle Microphone" aria-label="Toggle Microphone">
+            🎙️
+          </button>
+        </div>
+
+        <form class="input-box-wrapper" id="cmdForm" onsubmit="return false;">
+          <input
+            type="text"
+            class="cmd-input"
+            id="cmdInput"
+            placeholder="Ask ANY question, request code, or give a command... (e.g. 'Explain relativity', 'weather in Paris')"
+            autocomplete="off"
+          />
+          <button type="submit" class="btn-send" id="btnSend" title="Send Command" aria-label="Send">
+            ➔
+          </button>
+        </form>
+      </footer>
+
+      <!-- Settings Drawer -->
+      <div class="drawer-overlay" id="settingsDrawer">
+        <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+          <div class="drawer-header">
+            <h2 id="settingsTitle">⚙️ Assistant Settings</h2>
+            <button class="btn-close" id="btnCloseSettings" aria-label="Close Settings">✕</button>
+          </div>
+
+          <div class="form-group">
+            <label for="inputApiKey">Google Gemini API Key</label>
+            <input
+              type="password"
+              id="inputApiKey"
+              class="form-control"
+              placeholder="Gemini API Key (configured)"
+            />
+            <p class="form-hint">
+              Default active key is configured. Pre-tested with Gemini 3.8 / 3.1 Flash.
+            </p>
+          </div>
+
+          <div class="form-group">
+            <label for="selectModel">Primary Gemini Model</label>
+            <select id="selectModel" class="form-control">
+              <option value="gemini-3.8-flash">Gemini 3.8 Flash (Flagship Fast)</option>
+              <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash Lite (Ultra Fast)</option>
+              <option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
+              <option value="gemini-flash-latest">Gemini Flash Latest</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="inputAgentRouterKey">Agent Router / Backup Key (tk3)</label>
+            <input
+              type="password"
+              id="inputAgentRouterKey"
+              class="form-control"
+              placeholder="sk-ktG05..."
+            />
+            <p class="form-hint">
+              Backup OpenAI-compatible gateway token (tk3).
+            </p>
+          </div>
+
+          <div class="form-group">
+            <label for="inputAssistantName">Assistant Name</label>
+            <input
+              type="text"
+              id="inputAssistantName"
+              class="form-control"
+              value="NOVA"
+              placeholder="e.g. NOVA, JARVIS, AURA"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="selectVoice">Synthesized Voice</label>
+            <select id="selectVoice" class="form-control">
+              <option value="">Default System Voice</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Speech Rate: <span id="rateVal" class="slider-val">1.0x</span></label>
+            <div class="slider-group">
+              <input type="range" id="rangeRate" min="0.7" max="1.5" step="0.1" value="1.0" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Speech Pitch: <span id="pitchVal" class="slider-val">1.0</span></label>
+            <div class="slider-group">
+              <input type="range" id="rangePitch" min="0.6" max="1.4" step="0.1" value="1.0" />
+            </div>
+          </div>
+
+          <div class="switch-group">
+            <label for="checkSoundFx">Futuristic Sound Effects</label>
+            <input type="checkbox" id="checkSoundFx" checked style="accent-color: var(--cyan-neon); width: 18px; height: 18px;" />
+          </div>
+
+          <div style="margin-top: 24px;">
+            <button class="btn-send" id="btnSaveSettings" style="width: 100%; border-radius: var(--radius-sm); height: 42px; font-weight: 600;">
+              Save Preferences
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tools Drawer (Timers & Notes) -->
+      <div class="drawer-overlay" id="toolsDrawer">
+        <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="toolsTitle">
+          <div class="drawer-header">
+            <h2 id="toolsTitle">🗂️ Active Tools & Widgets</h2>
+            <button class="btn-close" id="btnCloseTools" aria-label="Close Tools">✕</button>
+          </div>
+
+          <!-- Active Timers Widget -->
+          <div class="widget-card" id="widgetTimers">
+            <h3>⏱️ Active Timers</h3>
+            <div id="timersList">
+              <p style="font-size: 0.82rem; color: var(--text-muted);">No active timers. Say <em>"timer for 5 minutes"</em> to start one.</p>
+            </div>
+          </div>
+
+          <!-- Quick Notes Widget -->
+          <div class="widget-card" id="widgetNotes">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+              <h3 style="margin-bottom: 0;">📝 Scratchpad Notes</h3>
+              <button class="btn-bubble-action" id="btnClearAllNotes" title="Clear all notes">Clear All</button>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+              <input type="text" id="inputNewNote" class="form-control" placeholder="Write a note..." style="font-size: 0.82rem; padding: 6px 10px;" />
+              <button id="btnAddNote" class="btn-send" style="width: 32px; height: 32px; font-size: 0.8rem;">+</button>
+            </div>
+
+            <div id="notesList">
+              <!-- Loaded dynamically from store -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
