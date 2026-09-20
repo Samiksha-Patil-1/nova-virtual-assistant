@@ -32,13 +32,14 @@ export async function askGemini(prompt, {
 
     if (backendRes.ok) {
       const data = await backendRes.json();
-      if (data.text) {
+      const outputText = data.reply || data.text;
+      if (outputText) {
         return {
           success: true,
-          provider: 'Hugging Face (Backend /api/neural)',
-          model: data.model || DEFAULT_HF_MODEL,
-          text: data.text.trim(),
-          speech: data.speech || extractSpeechSummary(data.text)
+          provider: 'Local Ollama (llama2)',
+          model: data.model || 'llama2',
+          text: outputText.trim(),
+          speech: data.speech || extractSpeechSummary(outputText)
         };
       }
     }
